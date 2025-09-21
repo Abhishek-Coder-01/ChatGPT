@@ -606,9 +606,11 @@ function showTypingIndicator() {
   typingDiv.innerHTML = `
         <div class="bg-white border rounded-2xl rounded-bl-none px-4 py-3 max-w-md shadow-sm">
           <div class="flex items-center gap-2 mb-2">
-            <div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
-              <i class="fas fa-robot text-white text-xs"></i>
-            </div>
+              <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center shadow-sm">
+          <img 
+                    width="19" height="19" src="https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg"
+                        alt="">
+      </div>
             <span class="font-medium text-gray-700">Gemini AI</span>
           </div>
           <div class="typing-indicator">
