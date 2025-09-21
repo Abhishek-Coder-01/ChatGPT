@@ -298,7 +298,7 @@ function addMessageToChat(message, sender) {
   const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   if (sender === 'user') {
-messageDiv.innerHTML = `
+    messageDiv.innerHTML = `
   <div class="bg-white border border-gray-200 rounded-2xl rounded-se-none 
               px-3 py-2 sm:px-4 sm:py-3 max-w-[85%] xs:max-w-xs sm:max-w-md md:max-w-lg 
               shadow-sm hover:shadow-md transition-all duration-200 ml-auto inline-block">
@@ -318,10 +318,10 @@ messageDiv.innerHTML = `
           </div>
       </div>
   </div>
-`; 
+`;
 
- 
-   
+
+
 
 
   } else {
@@ -333,8 +333,10 @@ messageDiv.innerHTML = `
 
     
     <div class="flex items-center gap-2 mb-2">
-      <div class="w-6 h-6 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm">
-        <i class="fas fa-robot text-white text-xs"></i>
+      <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center shadow-sm">
+          <img 
+                    width="19" height="19" src="https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg"
+                        alt="">
       </div>
       <span class="font-semibold text-gray-800 text-[14px] sm:text-[16px]">Gemini AI</span>
     </div>

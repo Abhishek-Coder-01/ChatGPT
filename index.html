@@ -517,7 +517,7 @@
 
         /* NEW: Fix for mobile layout */
         @media (max-width: 768px) {
-            
+
             main.flex-1 {
                 width: 100%;
             }
@@ -560,7 +560,7 @@
     <!-- Mobile sidebar -->
     <aside class="w-64 border-r bg-gray-100 flex flex-col mobile-sidebar lg:relative lg:translate-x-0" id="sidebar">
         <div class="p-4 flex items-center justify-between">
-            <h1 class="text-xl font-bold text-blue-600 flex items-center gap-2">
+            <!-- <h1 class="text-xl font-bold text-blue-600 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     data-lucide="sparkles" class="lucide lucide-sparkles h-6 w-6 text-blue-600">
@@ -572,7 +572,19 @@
                     <circle cx="4" cy="20" r="2"></circle>
                 </svg>
                 <span>Gemini</span>
+            </h1> -->
+            <h1 class="flex items-center gap-1">
+                <span>
+                    <img 
+                    width="25" height="25" src="https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg"
+                        alt="">
+                </span>
+
+                <span><img width="70" height="70"
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" alt="Gemini Logo">
+                </span>
             </h1>
+
             <button class="p-2 rounded-lg hover:bg-gray-100 lg:hidden" id="close-sidebar">
                 <i class="fas fa-times"></i>
             </button>
