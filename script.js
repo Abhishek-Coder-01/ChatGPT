@@ -28,6 +28,60 @@ const newChatToastContainer = document.getElementById("newChatToastContainer");
 const clearBtn = document.getElementById("clear-chat-btn");
 const toastContainer = document.getElementById("toast-container");
 
+
+
+// Try 
+const micBtn = document.getElementById("mic-btn");
+
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRecognition) {
+  const recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.lang = "en-US";
+
+  let isListening = false;
+
+  micBtn.addEventListener("click", () => {
+    if (!isListening) {
+      recognition.start();
+      isListening = true;
+      micBtn.classList.remove("text-gray-500", "hover:bg-gray-100");
+      micBtn.classList.add("bg-red-500", "text-white"); // active state
+    } else {
+      recognition.stop();
+      isListening = false;
+      micBtn.classList.remove("bg-red-500", "text-white");
+      micBtn.classList.add("text-gray-500", "hover:bg-gray-100"); // back to normal
+    }
+  });
+
+recognition.onresult = (event) => {
+  const transcript = event.results[0][0].transcript;
+  messageInput.value += transcript + " ";
+
+  // Mic se aaye text par bhi send button update ke liye
+  messageInput.dispatchEvent(new Event('input'));
+};
+
+
+  recognition.onend = () => {
+    isListening = false;
+    micBtn.classList.remove("bg-red-500", "text-white");
+    micBtn.classList.add("text-gray-500", "hover:bg-gray-100");
+  };
+} else {
+  alert("Speech Recognition not supported in this browser!");
+}
+
+
+
+
+
+
+
+//// Send button state management
+
 messageInput.addEventListener('input', function () {
   if (this.value.trim().length > 0) {
     // Input has text → darker button
