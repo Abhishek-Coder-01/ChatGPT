@@ -10,7 +10,7 @@
 
 # Gemini Clone
 
-A modern AI chatbot web application inspired by Google Gemini. This project allows users to interact with an AI assistant with a clean, responsive interface built using **Tailwind CSS** and **Flask**. It also supports **voice input and output** for a more interactive experience.
+A modern AI chatbot web application inspired by Google Gemini. This project allows users to interact with an AI assistant with a clean, responsive interface built using **Tailwind CSS** and **Javascript**. It also supports **voice input and output** for a more interactive experience.
 
 ---
 
