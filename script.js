@@ -325,6 +325,7 @@ async function sendMessage(messageText = null) {
 
     const data = await response.json();
 
+    
     // Remove typing indicator
     removeTypingIndicator();
 
@@ -337,7 +338,7 @@ async function sendMessage(messageText = null) {
   } catch (error) {
     console.error('Error calling Gemini API:', error);
     removeTypingIndicator();
-    addMessageToChat('Sorry, I encountered an error processing your request. Please try again.', 'ai');
+    addMessageToChat('Too many requests! Please wait a few seconds before sending another message. <br> <b>429 Error from Gemini API.');
   }
 
   // Save chat to localStorage
