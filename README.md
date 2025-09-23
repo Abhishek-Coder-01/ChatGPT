@@ -31,7 +31,9 @@ A modern AI chatbot web application inspired by Google Gemini. This project allo
 - **Frontend:** HTML, Tailwind CSS, JavaScript
 - **AI Integration:** OpenAI API (or any AI API)
 - **Voice Integration:** Web Speech API (for browser TTS/STT) or OpenAI TTS
+- **Chat history saved in LocalStorage (auto-persist)**
 - **Version Control:** Git
+
 
 ---
 
