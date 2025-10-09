@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini-Clone-2</title>
+    <title>ChatGPT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-   <link rel="icon" sizes="180x180" href="https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg" type="image/svg+xml">
-
+    <link rel="icon" href="{{ url_for('static', filename='favicon/chatgpt.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <!-- Add Prism.js for syntax highlighting  -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css" rel="stylesheet">
@@ -19,536 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
 
-        body,
-        html {
-            overflow-x: hidden;
-        }
-
-        .chat-container {
-            height: calc(100vh - 200px);
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
-
-        .chat-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .chat-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        .chat-container::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 20px;
-        }
-
-        .typing-indicator {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #9CA3AF;
-            margin: 0 2px;
-            animation: typingAnimation 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typingAnimation {
-
-            0%,
-            60%,
-            100% {
-                transform: translateY(0);
-            }
-
-            30% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .message-input {
-            resize: none;
-        }
-
-        .code-block {
-            background-color: #1f2937;
-            color: #f3f4f6;
-            padding: 12px;
-            border-radius: 6px;
-            font-family: monospace;
-            overflow-x: auto;
-            margin: 8px 0;
-            position: relative;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            color: #9ca3af;
-            font-size: 0.875rem;
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 45px 12px 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 16px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            cursor: pointer;
-        }
-
-        .chat-history-item {
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .chat-history-item:hover .delete-chat {
-            opacity: 1;
-        }
-
-        .delete-chat {
-            opacity: 0;
-            transition: opacity 0.2s;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .search-results,
-        #idebar {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 8px;
-            max-height: 300px;
-            overflow-y: auto;
-            position: absolute;
-            width: 100%;
-            z-index: 10;
-            /* Hide scrollbar for Chrome, Safari and Opera */
-            scrollbar-width: none;
-            /* Firefox */
-            -ms-overflow-style: none;
-            /* IE and Edge */
-        }
-
-        .search-results::-webkit-scrollbar {
-            display: none;
-        }
-
-        .search-result-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .search-result-item:hover {
-            background-color: #f9fafb;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .highlight {
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-weight: 500;
-        }
-
-        /* Custom styling for code blocks */
-        pre[class*="language-"] {
-            background: transparent !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        code[class*="language-"] {
-            font-size: 14px !important;
-            text-shadow: none !important;
-        }
-
-        /* New styles for centered input */
-        .input-container {
-            transition: all 0.3s ease;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* Mobile sidebar */
-        .mobile-sidebar {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 40;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        .mobile-sidebar.active {
-            transform: translateX(0);
-        }
-
-        .mobile-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 30;
-        }
-
-        .mobile-overlay.active {
-            display: block;
-        }
-
-        /* Responsive adjustments - UPDATED */
-        @media (max-width: 768px) {
-            .chat-container {
-                height: calc(100vh - 180px);
-                padding: 0.75rem;
-            }
-
-            .input-container.centered {
-                padding: 1rem 1rem 2px 1rem;
-            }
-
-            .code-block {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            /* Header adjustments */
-            header {
-                padding: 0.75rem;
-            }
-
-            #current-chat-title {
-                max-width: 180px;
-
-            }
-
-            /* Input area adjustments */
-            .message-input {
-                padding-right: 70px;
-                font-size: 16px;
-            }
-
-            .input-actions {
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-
-            .input-actions button {
-                font-size: 11px;
-                padding: 2rem 8px;
-            }
-
-            /* Welcome message adjustments */
-            #welcome-message {
-                padding: 1rem;
-            }
-
-            #welcome-message h2 {
-                font-size: 27px;
-            }
-
-            #welcome-message p {
-                font-size: 15px;
-            }
-
-            /* Footer text */
-            .input-container .text-xs {
-                font-size: 9px;
-                padding-top: 0.375rem;
-                padding-bottom: 0.371rem;
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-            }
-
-            #footer-note {
-                font-size: 9px;
-            }
-        
-
-
-        }
-
-        @media (max-width: 640px) {
-            .message-input {
-                padding-right: 60px;
-            }
-
-            .input-container.centered .input-actions {
-                flex-direction: row;
-
-            }
-
-            /* Chat history items */
-            .chat-history-item {
-                padding: 0.5rem;
-            }
-
-            /* Search container in sidebar */
-            .search-container {
-                margin: 10px auto;
-            }
-
-            /* Right-side icons in input */
-            .flex.items-center.gap-2.absolute.right-3.bottom-3 {
-                bottom: 12px;
-            }
-        }
-
-        /* NEW: Input field improvements for mobile */
-        @media (max-width: 500px) {
-            #message-input {
-                font-size: 14px;
-                /* Prevents zoom on iOS */
-            }
-
-
-            .input-actions button {
-                margin-bottom: px;
-            }
-        }
-
-        @media (max-width: 480px) {
-
-
-            #send-btn svg {
-                width: 19px;
-                height: 19px;
-            }
-
-            .chat-container {
-                height: calc(100vh - 160px);
-                padding: 0.5rem;
-            }
-
-            /* Header buttons */
-            #clear-chat-btn {
-                padding: 0.4rem;
-            }
-
-            /* Input area */
-            .relative.flex.items-center.bg-white.rounded-2xl.shadow-md.border {
-                padding: 0.5rem;
-                padding-bottom: 2.5rem;
-            }
-
-            .message-input {
-                min-height: 40px;
-            }
-
-            /* Action buttons */
-            .input-actions {
-                bottom: 8px;
-                left: 8px;
-            }
-
-            .input-actions button {
-                font-size: 10px;
-            }
-
-            /* Right side icons */
-            .flex.items-center.gap-2.absolute.right-3.bottom-3 {
-                right: 8px;
-                bottom: 8px;
-            }
-
-            .flex.items-center.gap-2.absolute.right-3.bottom-3 button {
-                padding: 0.35rem;
-            }
-
-            .flex.items-center.gap-2.absolute.right-3.bottom-3 svg {
-                width: 16px;
-                height: 16px;
-            }
-
-            /* Welcome icon */
-            #welcome-message .w-16 {
-                width: 4rem;
-                height: 4rem;
-            }
-
-            #welcome-message svg {
-                width: 1.7rem;
-                height: 1.7rem;
-            }
-
-
-        }
-
-        @media (max-width: 411px) {
-
-
-            /* Welcome icon */
-            /* #welcome-message .w-16 {
-                width: 2rem;
-                height: 2rem;
-            } */
-
-            /* #welcome-message svg {
-                width: 1.3rem;
-                height: 1.3rem;
-            } */
-
-            #welcome-message h2 {
-                font-size: 22px;
-                margin-bottom: 5px;
-            }
-
-            #welcome-message p {
-                font-size: 12px;
-            }
-
-        }
-
-
-        @media (min-width: 450px) {
-            .toast {
-                font-size: 20px;
-            }
-
-        }
-
-
-
-        /* Device indicator */
-        .device-indicator {
-            position: fixed;
-            top: 20px;
-            right: -200px;
-            /* start off-screen */
-            z-index: 9999;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: right 0.5s ease, opacity 1s ease;
-            opacity: 1;
-        }
-
-        .device-indicator.mobile {
-            background: rgba(59, 130, 246, 0.8);
-        }
-
-        .device-indicator.tablet {
-            background: rgba(139, 92, 246, 0.8);
-        }
-
-        .device-indicator.desktop {
-            background: rgba(16, 185, 129, 0.8);
-        }
-
-        /* Slide in */
-        .device-indicator.show {
-            right: 20px;
-            /* final position */
-            opacity: 1;
-        }
-
-        /* Slide out */
-        .device-indicator.fade-out {
-            right: -200px;
-            /* move off-screen */
-            opacity: 0;
-        }
-
-        .action-btn {
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .copy-btn:hover {
-            color: #3b82f6 !important;
-        }
-
-        .share-btn:hover {
-            color: #10b981 !important;
-        }
-
-        .download-btn:hover {
-            color: #f59e0b !important;
-        }
-
-        /* NEW: Fix for mobile layout */
-        @media (max-width: 768px) {
-
-            main.flex-1 {
-                width: 100%;
-            }
-
-            /* Ensure proper spacing on mobile */
-            #chat-messages .flex {
-                padding: 0.5rem;
-            }
-
-            /* Better message alignment on mobile */
-            .chat-message {
-                max-width: 85%;
-                margin: 0.5rem 0;
-            }
-        }
-    </style>
 </head>
 
 <body class="h-screen bg-white text-gray-800 flex">
@@ -559,8 +31,6 @@
     </div>
     <div id="newChatToastContainer" class="fixed top-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-50">
     </div>
-
-
 
 
     <!-- Device indicator -->
@@ -583,9 +53,12 @@
                         alt="">
                 </span>
 
-                <span><img width="70" height="70"
-                        src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg"
-                        alt="Gemini Logo">
+                <span>
+                    <h3
+                        class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500">
+                        ChatGPT
+                    </h3>
+
                 </span>
             </h1>
 
@@ -607,13 +80,15 @@
 
         <div class="px-4 py-2 rounded-full">
             <div class="search-container">
-                <input type="text" id="history-search" class="search-input " placeholder="Search history..">
+                <input type="text" id="history-search" class="search-input border-0 focus:ring-0 focus:border-0"
+                    placeholder="Search history..">
                 <div class="search-icon">
                     <i class="fas fa-search"></i>
                 </div>
                 <div id="search-results" class="search-results hidden"></div>
             </div>
         </div>
+
 
         <div class="flex-1 overflow-y-auto" id="chat-history">
             <p class="px-4 py-2 text-xs text-gray-500 font-medium">Today</p>
@@ -665,6 +140,8 @@
         <!-- Chat Container -->
 
         <div class="chat-container p-4 md:p-6 flex-1 overflow-y-auto bg-gray-50" id="chat-messages">
+
+
             <!-- Welcome message with search in middle -->
             <div class="flex flex-col items-center justify-center h-full text-center p-6" id="welcome-message">
 
@@ -699,7 +176,7 @@
             <!-- Chat messages will be added here dynamically -->
         </div>
 
-  
+
         <!-- Input Box -->
         <div class="pt-4 pb-[2px] pr-4 pl-4  border-t bg-white input-container" id="input-container">
             <div class="max-w-3xl mx-auto">
@@ -707,7 +184,7 @@
                     class="relative flex items-center bg-white rounded-2xl shadow-md border border-gray-200 px-4 py-3 pt-[0.5rem] pb-[3.5rem] transition-all duration-200">
 
                     <!-- Textarea -->
-                    <textarea id="message-input" type="text" placeholder="Message Gemini..."
+                    <textarea id="message-input" type="text" placeholder="Ask anything"
                         class="flex-1 outline-none bg-transparent text-gray-800 placeholder-gray-500 message-input max-h-32 py-1 pr-28 resize-none"
                         rows="1"></textarea>
 
@@ -753,15 +230,16 @@
                             </svg>
                         </button>
 
+
+
                         <!-- Send button -->
-                        <button
-                            class="p-2 bg-blue-300 text-white rounded-full transition-colors duration-150 shadow-md"
+                        <button class="p-2 bg-blue-300 text-white rounded-full transition-colors duration-150 shadow-md"
                             id="send-btn">
-                            <svg width="20" height="20" viewBox="0 0 16 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg" class="icon">
                                 <path
-                                    d="M8.3125 0.981648C8.66767 1.05456 8.97902 1.20565 9.26270 1.43380C9.48724 1.61444 9.73029 1.85939 9.97949 2.10860L14.7070 6.83614L13.2930 8.25020L9.00000 3.95723V15.0432H7.00000V3.95723L2.70703 8.25020L1.29297 6.83614L6.02051 2.10860C6.26971 1.85939 6.51277 1.61444 6.73730 1.43380C6.97662 1.24132 7.28445 1.04548 7.68750 0.981648C7.89730 0.948471 8.10310 0.956625 8.31250 0.981648Z"
-                                    fill="currentColor"></path>
+                                    d="M8.99992 16V6.41407L5.70696 9.70704C5.31643 10.0976 4.68342 10.0976 4.29289 9.70704C3.90237 9.31652 3.90237 8.6835 4.29289 8.29298L9.29289 3.29298L9.36907 3.22462C9.76184 2.90427 10.3408 2.92686 10.707 3.29298L15.707 8.29298L15.7753 8.36915C16.0957 8.76192 16.0731 9.34092 15.707 9.70704C15.3408 10.0732 14.7618 10.0958 14.3691 9.7754L14.2929 9.70704L10.9999 6.41407V16C10.9999 16.5523 10.5522 17 9.99992 17C9.44764 17 8.99992 16.5523 8.99992 16Z">
+                                </path>
                             </svg>
                         </button>
 
@@ -773,7 +251,7 @@
 
                 <!-- Footer note -->
                 <p class="text-gray-500 text-center mt-2 text-[11px]" id="footer-note">
-                    Gemini can make mistakes. Consider checking important information.
+                    ChatGPT can make mistakes. Check important info.
                 </p>
             </div>
         </div>
@@ -799,7 +277,17 @@
     <!-- Overlay for when input is centered -->
     <div class="overlay" id="overlay"></div>
 
-    <script src="script.js"></script>
+    <!-- Scroll to bottom button -->
+    <button id="scroll-to-bottom" aria-label="Scroll to bottom" title="Scroll to bottom">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14" />
+            <path d="M19 12l-7 7-7-7" />
+        </svg>
+
+    </button>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>
