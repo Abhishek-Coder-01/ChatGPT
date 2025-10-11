@@ -3,6 +3,7 @@ import requests
 from flask_cors import CORS
 import logging
 import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)  # allows frontend requests
@@ -12,7 +13,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # 🔐 OpenRouter API key - You should use environment variable for production
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "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")
+# Load variables from .env (if present)
+load_dotenv()
+
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+if not OPENROUTER_API_KEY:
+    logger.warning(
+        "OPENROUTER_API_KEY not found in environment. Set it in your .env file or the system environment for production."
+    )
 
 @app.route("/")
 def home():
