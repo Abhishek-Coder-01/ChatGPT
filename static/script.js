@@ -555,7 +555,7 @@ function startTypingEffect(messageDiv, formattedMessage, originalMessage, sender
   const plainText = originalMessage;
 
   let index = 0;
-  const typingSpeed = 30;
+  const typingSpeed = 10;
 
   function typeNextCharacter() {
     if (index < plainText.length) {
