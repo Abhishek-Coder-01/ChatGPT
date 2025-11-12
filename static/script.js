@@ -16,8 +16,6 @@ const menuBtn = document.getElementById('menu-btn');
 const closeSidebar = document.getElementById('close-sidebar');
 const sidebar = document.getElementById('sidebar');
 const mobileOverlay = document.getElementById('mobile-overlay');
-const deviceIndicator = document.getElementById('device-indicator');
-const deviceText = document.getElementById('device-text');
 const clickableDiv = document.querySelector(".clickable");
 const newChatToastContainer = document.getElementById("newChatToastContainer");
 const clearBtn = document.getElementById("clear-chat-btn");
@@ -178,39 +176,6 @@ function initializeChatData() {
 
 }
 
-// Device indicator update
-function updateDeviceIndicator() {
-  const width = window.innerWidth;
-
-  let iconHTML = '';
-  let text = '';
-
-  if (width < 768) {
-    iconHTML = '<i class="fas fa-mobile-screen"></i>';
-    text = 'Mobile View';
-    deviceIndicator.className = 'device-indicator mobile';
-  } else if (width >= 768 && width < 1024) {
-    iconHTML = '<i class="fas fa-tablet-alt"></i>';
-    text = 'Tablet View';
-    deviceIndicator.className = 'device-indicator tablet';
-  } else {
-    iconHTML = '<i class="fas fa-desktop"></i>';
-    text = 'Desktop View';
-    deviceIndicator.className = 'device-indicator desktop';
-  }
-
-  deviceIndicator.innerHTML = `${iconHTML} <span id="device-text">${text}</span>`;
-
-  deviceIndicator.classList.remove('fade-out');
-  void deviceIndicator.offsetWidth;
-  deviceIndicator.classList.add('show');
-
-  clearTimeout(deviceIndicator.hideTimeout);
-  deviceIndicator.hideTimeout = setTimeout(() => {
-    deviceIndicator.classList.remove('show');
-    deviceIndicator.classList.add('fade-out');
-  }, 3000);
-}
 
 // Mobile sidebar initialization
 function initMobileSidebar() {
@@ -555,7 +520,7 @@ function startTypingEffect(messageDiv, formattedMessage, originalMessage, sender
   const plainText = originalMessage;
 
   let index = 0;
-  const typingSpeed = 30;
+  const typingSpeed = 10;
 
   function typeNextCharacter() {
     if (index < plainText.length) {
@@ -1168,8 +1133,6 @@ historySearch.addEventListener('blur', () => {
 // Close centered input when clicking on overlay
 overlay.addEventListener('click', resetInputPosition);
 
-// Window resize handler
-window.addEventListener('resize', updateDeviceIndicator);
 
 //  Initialize everything properly
 document.addEventListener('DOMContentLoaded', () => {
@@ -1178,7 +1141,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeChatData();
 
   // Initialize other components
-  updateDeviceIndicator();
   initMobileSidebar();
   updateChatHistoryUI();
 
@@ -1191,7 +1153,6 @@ document.addEventListener('DOMContentLoaded', () => {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initializeChatData();
-    updateDeviceIndicator();
     initMobileSidebar();
     updateChatHistoryUI();
     centerInput();
@@ -1199,7 +1160,6 @@ if (document.readyState === 'loading') {
 } else {
   // DOM is already ready
   initializeChatData();
-  updateDeviceIndicator();
   initMobileSidebar();
   updateChatHistoryUI();
   centerInput();

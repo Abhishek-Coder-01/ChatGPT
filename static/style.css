@@ -442,45 +442,6 @@
 
         }
 
-
-
-        /* Device indicator */
-        .device-indicator {
-            position: fixed;
-            top: 20px;
-            right: -200px;
-            /* start off-screen */
-            z-index: 9999;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: right 0.5s ease, opacity 1s ease;
-            opacity: 1;
-        }
-
-        .device-indicator.mobile {
-            background: rgba(59, 130, 246, 0.8);
-        }
-
-        .device-indicator.tablet {
-            background: rgba(139, 92, 246, 0.8);
-        }
-
-        .device-indicator.desktop {
-            background: rgba(16, 185, 129, 0.8);
-        }
-
-        /* Slide in */
-        .device-indicator.show {
-            right: 20px;
-            /* final position */
-            opacity: 1;
-        }
-
         /* Scroll-to-bottom button placed above the input box */
         #scroll-to-bottom {
             position: fixed;
@@ -524,12 +485,7 @@
             }
         }
 
-        /* Slide out */
-        .device-indicator.fade-out {
-            right: -200px;
-            /* move off-screen */
-            opacity: 0;
-        }
+      
 
         .action-btn {
             transition: all 0.2s ease;
